@@ -10,7 +10,6 @@ import javax.swing.JPanel;
 
 public class MyFrame03 extends JFrame implements ActionListener{//MyFrame02을 ActionListener 타입으로 만들어 버린것
 
-   
    //생성자
    public MyFrame03(){
       initUI();

@@ -15,7 +15,6 @@ public class MyFrame05 extends JFrame implements ActionListener{
 	
    JTextField inputText, resultText;
    JButton sendBtn, clearBtn;
-   
 	
    //생성자
    public MyFrame05(){

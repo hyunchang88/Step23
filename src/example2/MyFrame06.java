@@ -61,19 +61,11 @@ public class MyFrame06 extends JFrame implements ActionListener{
 		String msg = inputText.getText();
 		// 눌러진 버튼의 참조값 얻어오기
 		Object obj = arg0.getSource();
-		
-//		while(true){
-//			if(obj == this.sendBtn){ // 전송 버튼을 눌렀을때
-//				textArea.setText(msg+"\r\n"); // 밑에 칸에 입력한 msg 출력 + 개행
-//				inputText.setText("");
-//			}else if(msg.equals("q"))break;
-//		}
-		
-		if(obj == this.sendBtn){ // 전송 버튼을 눌렀을때
-			textArea.setText(msg+"\r\n"); // 밑에 칸에 입력한 msg 출력 + 개행
+
+
+			textArea.append(msg+"\r\n"); // 밑에 칸에 입력한 msg 출력 + 개행
 			inputText.setText("");
-		}
-		// 다음줄에 계속 나오게 하려고 while 돌렸는데 무한루프 돈듯 이상해짐
+
 	}
 }
 
