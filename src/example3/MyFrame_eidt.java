@@ -6,9 +6,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -25,21 +28,22 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 
 
-public class MyFrame extends JFrame implements ActionListener{
+public class MyFrame_eidt extends JFrame implements ActionListener{
 	
 	// 맴버필드 정의하기
 	JTextField inputNum, inputTime, inputDoit, inputDone;
 	DefaultTableModel model;
-	JButton saveBtn, deleteBtn, updateBtn;
+	JButton saveBtn, deleteBtn, updateBtn, exportBtn;
 	JTable table;
 	
 	// List 에 Map 을 담아
 	List<Map<String, Object>> members;
 	
 	// 생성자
-	public MyFrame(){
+	public MyFrame_eidt(){
 		initUI();
 	}
 	// 메소드
@@ -48,6 +52,7 @@ public class MyFrame extends JFrame implements ActionListener{
 		setLayout(new BorderLayout());
 		// 상단 페널 객체 생성
 		JPanel topPanel=new JPanel();
+		JPanel bottomPanel=new JPanel();
 		
 		// 레이블 객체 생성
 		JLabel label1=new JLabel("번호");
@@ -64,10 +69,12 @@ public class MyFrame extends JFrame implements ActionListener{
 		saveBtn=new JButton("저장");
 		deleteBtn=new JButton("삭제");
 		updateBtn=new JButton("수정");
+		exportBtn=new JButton("엑셀로 저장");
 		// 버튼 리스너 등록
 		saveBtn.addActionListener(this);
 		deleteBtn.addActionListener(this);
 		updateBtn.addActionListener(this);
+		exportBtn.addActionListener(this);
 		
 		// 페널에 컴포넌트 추가 하기 
 		topPanel.add(label1);
@@ -81,9 +88,11 @@ public class MyFrame extends JFrame implements ActionListener{
 		topPanel.add(saveBtn);
 		topPanel.add(deleteBtn);
 		topPanel.add(updateBtn);
+		bottomPanel.add(exportBtn);
 		
 		// 프레임의 상단에 페널 배치하기
 		add(topPanel, BorderLayout.NORTH);
+		add(bottomPanel,  BorderLayout.SOUTH);
 		
 		// 테이블 칼럼명
 		String[] colName={"번호", "시간", "할일", "수행여부"};
@@ -181,6 +190,17 @@ public class MyFrame extends JFrame implements ActionListener{
 			members.get(selectedIndex).put("done", done);
 			saveTofile();
 			JOptionPane.showMessageDialog(this, "수정했습니다.");
+
+		
+		}else if(e.getSource() == exportBtn){
+			// 엑셀파일로 저장하기
+			try {
+				exportTable(table, new File("C:/myFolder/tabledata.xls"));
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			
 		}
 		// 파일에 있는 정보 로딩하기
 		loadFromFile();
@@ -261,6 +281,9 @@ public class MyFrame extends JFrame implements ActionListener{
 		}
 	}
 	
+	///////////////////////////////////////////////////////////////////////////////
+	
+	// 힌트
 	class HintTextField extends JTextField implements FocusListener {
 
 		  private final String hint;
@@ -295,11 +318,35 @@ public class MyFrame extends JFrame implements ActionListener{
 		    return showingHint ? "" : super.getText();
 		  }
 
-		} 
+		}
+	
+	///////////////////////////////////////////////////////////////////////////////////
+	
+	// 엑셀
+	public void exportTable(JTable table, File file) throws IOException {
+        TableModel model = table.getModel();
+        FileWriter out = new FileWriter(file);
+        for(int i=0; i < model.getColumnCount(); i++) {
+        	out.write(model.getColumnName(i) + "\t");
+        }
+        out.write("\n");
+
+        for(int i=0; i< model.getRowCount(); i++) {
+        	for(int j=0; j < model.getColumnCount(); j++) {
+        		out.write(model.getValueAt(i,j).toString()+"\t");
+        	}
+        out.write("\n");
+        }
+	
+	    out.close();
+	    System.out.println("write out to: " + file);
+	}
+	
+	/////////////////////////////////////////////////////////////////////////////////////////
 
 	
 	public static void main(String[] args) {
-		new MyFrame();
+		new MyFrame_eidt();
 	}
 }
 

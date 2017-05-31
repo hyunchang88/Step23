@@ -148,7 +148,7 @@ public class MemberFrame extends JFrame implements ActionListener{
 			int selectedIndex = table.getSelectedRow();
 			// 선택하지 않았으면 selectedIndex에 -1 이 들어감
 			if(selectedIndex==-1){
-				JOptionPane.showInternalMessageDialog(this, "수정할 row 를 선택하세요");
+				JOptionPane.showMessageDialog(this, "수정할 row 를 선택하세요");
 			}
 			// 수정할 이름과 주소를 읽어온다. // table.getValueAt ( row index, column index )
 			String name = (String)table.getValueAt(selectedIndex, 1);
